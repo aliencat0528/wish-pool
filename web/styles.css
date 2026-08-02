@@ -5,7 +5,7 @@
   --bg-deep: #070b1a;
   --bg-mid: #0e1430;
   --bg-glow: #1b2450;
-  --card: rgba(46, 58, 120, 0.22);
+  --card: rgba(38, 50, 108, 0.52);
   --card-border: rgba(196, 216, 255, 0.34);
   --text: #eef2ff;
   --text-muted: #d4dcf3;
@@ -41,7 +41,16 @@ body {
     radial-gradient(ellipse 65% 45% at 88% 42%, rgba(140, 205, 255, 0.26), transparent 66%),
     radial-gradient(ellipse 80% 55% at 50% 62%, rgba(172, 206, 255, 0.28), transparent 72%),
     radial-gradient(ellipse 50% 35% at 68% 88%, rgba(244, 186, 240, 0.22), transparent 70%),
-    linear-gradient(168deg, #24336f 0%, #2a4a92 22%, #2f63a8 44%, #3a5aa4 62%, #3d4590 80%, #262f66 100%);
+    linear-gradient(165deg,
+      #1b2456 0%,
+      #24336f 14%,
+      #2a4a92 28%,
+      #2d5ea6 40%,
+      #2f6fae 52%,
+      #3a63ac 64%,
+      #45529f 76%,
+      #3a3f86 88%,
+      #232a5e 100%);
   background-attachment: fixed;
 }
 
@@ -204,7 +213,6 @@ body {
   height: 122vh;
   border-radius: 50%;
   overflow: hidden;
-  transform-style: preserve-3d;
   box-shadow:
     0 0 0 1px rgba(200, 230, 255, 0.35),
     0 0 70px 14px rgba(150, 200, 255, 0.16),
@@ -212,10 +220,12 @@ body {
     inset 0 0 24px 5px rgba(210, 235, 255, 0.30);
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(42, 84, 150, 0.42) 0%,
-      rgba(62, 130, 190, 0.30) 45%,
-      rgba(126, 200, 232, 0.20) 78%,
-      rgba(198, 240, 255, 0.22) 100%);
+      rgba(38, 74, 145, 0.44) 0%,
+      rgba(48, 102, 172, 0.36) 28%,
+      rgba(62, 138, 196, 0.28) 52%,
+      rgba(104, 182, 224, 0.22) 74%,
+      rgba(160, 218, 244, 0.20) 88%,
+      rgba(206, 242, 255, 0.22) 100%);
 }
 
 /* 右下那池：從斜上方看下去 */
@@ -240,12 +250,13 @@ body {
   pointer-events: none;
   /* 低透明度、高彩度——這樣疊起來是「顏色變多」，不是「變白」。
      四片各自一個色相，才不會整片同一個藍。 */
-  filter: blur(46px);
+  /* 不用 filter: blur()——視窗大小的元素一邊動一邊重新模糊，每幀都要重算。
+     改用很長的色停自然暈開，視覺接近但成本是零。 */
   background:
-    radial-gradient(ellipse 32% 26% at 20% 24%, rgba(20, 200, 190, 0.16), transparent 68%),
-    radial-gradient(ellipse 30% 24% at 72% 30%, rgba(96, 108, 255, 0.17), transparent 68%),
-    radial-gradient(ellipse 34% 28% at 48% 78%, rgba(214, 108, 208, 0.13), transparent 68%),
-    radial-gradient(ellipse 26% 22% at 88% 70%, rgba(255, 186, 110, 0.10), transparent 68%);
+    radial-gradient(ellipse 44% 38% at 20% 24%, rgba(20, 210, 195, 0.20) 0%, rgba(40, 180, 220, 0.10) 32%, rgba(60, 140, 230, 0.05) 58%, transparent 80%),
+    radial-gradient(ellipse 42% 36% at 72% 30%, rgba(96, 108, 255, 0.21) 0%, rgba(140, 110, 245, 0.11) 32%, rgba(180, 120, 230, 0.05) 58%, transparent 80%),
+    radial-gradient(ellipse 46% 40% at 48% 78%, rgba(220, 110, 205, 0.17) 0%, rgba(190, 120, 235, 0.09) 32%, rgba(140, 140, 250, 0.04) 58%, transparent 80%),
+    radial-gradient(ellipse 36% 32% at 88% 70%, rgba(255, 190, 120, 0.14) 0%, rgba(255, 150, 160, 0.07) 32%, rgba(220, 130, 200, 0.03) 58%, transparent 80%);
   animation: aurora-drift 34s ease-in-out infinite alternate;
 }
 
@@ -263,7 +274,9 @@ body {
   border-radius: 50%;
   /* 只留一條細線。這裡放 box-shadow 會在放大 1.75 倍後把整頁洗白——
      六個環疊起來的光暈是會累加的 */
-  border: 1px solid rgba(214, 240, 255, 0.4);
+  border: 1.5px solid rgba(222, 244, 255, 0.62);
+  border-top-color: rgba(190, 215, 255, 0.34);
+  border-bottom-color: rgba(255, 240, 210, 0.5);
   opacity: 0;
   will-change: transform, opacity;
 }
@@ -279,35 +292,39 @@ body {
 /* 傾角要跟各自的池子一致，光波才像躺在同一片水面上 */
 @keyframes halo-br {
   0%   { transform: rotateX(64deg) rotateZ(-7deg) scale(1);    opacity: 0; }
-  12%  { opacity: 0.38; }
+  10%  { opacity: 0.75; }
   100% { transform: rotateX(64deg) rotateZ(-7deg) scale(1.75); opacity: 0; }
 }
 
 @keyframes halo-tl {
   0%   { transform: rotateX(-64deg) rotateZ(-7deg) scale(1);    opacity: 0; }
-  12%  { opacity: 0.38; }
+  10%  { opacity: 0.75; }
   100% { transform: rotateX(-64deg) rotateZ(-7deg) scale(1.75); opacity: 0; }
 }
 
 /* 兩池之間的水流：一團柔光沿對角線在兩池間來回，把它們連成同一片水 */
+/* 動 transform 不動 background-position——後者會觸發重繪，
+   在視窗大小的元素上等於每幀重畫一次整個畫面。 */
 .current {
   position: fixed;
-  inset: 0;
+  left: 0;
+  top: 0;
+  width: 62vw;
+  height: 46vh;
   z-index: 0;
   pointer-events: none;
-  background-image: radial-gradient(ellipse 50% 50% at 50% 50%,
-    rgba(198, 232, 255, 0.16) 0%,
-    rgba(206, 186, 255, 0.10) 45%,
+  will-change: transform, opacity;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%,
+    rgba(206, 240, 255, 0.24) 0%,
+    rgba(200, 180, 255, 0.15) 42%,
     transparent 72%);
-  background-repeat: no-repeat;
-  background-size: 62vw 46vh;
   animation: travel 13s ease-in-out infinite alternate;
 }
 
 @keyframes travel {
-  from { background-position: 6% 10%; opacity: 0.55; }
+  from { transform: translate3d(-8vw, -6vh, 0);  opacity: 0.55; }
   50%  { opacity: 1; }
-  to   { background-position: 94% 90%; opacity: 0.55; }
+  to   { transform: translate3d(76vw, 78vh, 0);  opacity: 0.55; }
 }
 
 /* 沿同一條對角線漂的光點，三顆錯開時間 */
@@ -366,7 +383,6 @@ body {
     radial-gradient(9px 2px at 72% 56%, rgba(210,240,255,.85), transparent),
     radial-gradient(6px 2px at 85% 30%, rgba(255,246,214,.75), transparent),
     radial-gradient(10px 3px at 94% 68%, rgba(255,255,255,.8), transparent);
-  filter: blur(0.6px);
   will-change: transform, opacity;
 }
 
@@ -384,11 +400,12 @@ body {
 }
 
 /* 水面的兩層流動光紋。兩層轉速與方向不同，交錯時才會有水在動的錯覺 */
-.pool::before,
-.pool::after {
+/* 每池只留一層旋轉水紋。原本兩層各帶 blur，等於四個巨大模糊層在轉，
+   是掉幀的第二大來源。單層 + 柔色停就夠看。 */
+.pool::before {
   content: '';
   position: absolute;
-  inset: -30%;
+  inset: -4%;
   border-radius: 50%;
   will-change: transform;
 }
@@ -396,21 +413,11 @@ body {
 .pool::before {
   background:
     repeating-conic-gradient(from 0deg at 50% 50%,
-      transparent 0deg 3deg,
-      rgba(225, 245, 255, 0.13) 3deg 5deg,
-      transparent 5deg 9deg);
-  filter: blur(14px);
-  animation: swirl 26s linear infinite;
-}
-
-.pool::after {
-  background:
-    repeating-conic-gradient(from 40deg at 50% 50%,
       transparent 0deg 4deg,
-      rgba(238, 216, 255, 0.11) 4deg 7deg,
-      transparent 7deg 12deg);
-  filter: blur(18px);
-  animation: swirl 41s linear infinite reverse;
+      rgba(225, 245, 255, 0.055) 6deg 8deg,
+      rgba(238, 216, 255, 0.045) 9deg 11deg,
+      transparent 13deg 18deg);
+  animation: swirl 34s linear infinite;
 }
 
 @keyframes swirl {
@@ -433,7 +440,6 @@ body {
     radial-gradient(6px 2px at 40% 80%, rgba(255,224,138,.75), transparent),
     radial-gradient(6px 2px at 62% 54%, rgba(143,216,255,.8), transparent),
     radial-gradient(6px 2px at 36% 44%, rgba(255,255,255,.7), transparent);
-  filter: blur(1.4px);
   animation: reflect-wobble 6s ease-in-out infinite alternate;
 }
 
@@ -514,8 +520,6 @@ h1 {
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   background: var(--card);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   font-size: 0.9rem;
 }
 .promise li { position: relative; padding-left: 1.5rem; }
@@ -535,8 +539,8 @@ form, .done {
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   background: var(--card);
-  backdrop-filter: blur(20px) saturate(125%);
-  -webkit-backdrop-filter: blur(20px) saturate(125%);
+  /* 刻意不用 backdrop-filter：它每幀都要重新取樣後面持續變動的背景，
+     是表單區塊閃爍的直接原因。改用稍高的底色透明度，一樣看得到背景。 */
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.10),
     0 20px 60px -40px rgba(0, 0, 0, 0.55);
