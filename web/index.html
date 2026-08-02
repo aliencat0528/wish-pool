@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品許願池 — 你的痛點，我來做做看</title>
+  <meta name="description" content="把你想做但做不出來的小工具丟進來。經 AI 可行性分析後進入開發清單，完成會寄信通知你。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#wish-form">跳到許願表單</a>
+
+  <div class="stars" aria-hidden="true"></div>
+
+  <header class="hero">
+    <p class="eyebrow">WISH POOL</p>
+    <h1>作品許願池</h1>
+    <p class="lede">
+      有想做但做不出來的小工具嗎？丟進來。<br>
+      我會做可行性分析，挑做得動也想做的題目開發，完成後寄信給你。
+    </p>
+
+    <ul class="promise" aria-label="給許願者的說明">
+      <li><strong>免費</strong>，也不會拿你的 email 做別的事</li>
+      <li><strong>不保證每個都會開發</strong>——等待中的許願不是承諾</li>
+      <li><strong>不可行也會回信說明原因</strong>，不會靜默略過</li>
+    </ul>
+  </header>
+
+  <main>
+    <form id="wish-form" novalidate>
+      <h2 class="form-title">許願</h2>
+
+      <div class="field">
+        <label for="pain">你的痛點 <span class="req" aria-hidden="true">*</span></label>
+        <p class="hint">具體到「你在什麼情況下卡住」。越具體越容易被做出來。</p>
+        <textarea id="pain" name="pain" rows="4" required maxlength="1000"
+          placeholder="例：每次要對帳都得手動比對兩份 Excel，一次要花兩小時，而且很容易看漏。"></textarea>
+        <div class="row"><span class="error" data-error-for="pain"></span><span class="count" data-count-for="pain"></span></div>
+      </div>
+
+      <div class="field">
+        <label for="solution">你想如何解決 <span class="req" aria-hidden="true">*</span></label>
+        <p class="hint">你心裡的樣子。想不清楚也沒關係，寫方向就好。</p>
+        <textarea id="solution" name="solution" rows="4" required maxlength="1000"
+          placeholder="例：丟兩個檔案進去，自動標出差異的那幾列。"></textarea>
+        <div class="row"><span class="error" data-error-for="solution"></span><span class="count" data-count-for="solution"></span></div>
+      </div>
+
+      <div class="field">
+        <label for="features">有什麼功能 <span class="req" aria-hidden="true">*</span></label>
+        <p class="hint">一行一個。如果只能做一個，請把最重要的放第一行。</p>
+        <textarea id="features" name="features" rows="4" required maxlength="1000"
+          placeholder="上傳兩個檔案&#10;標出差異列&#10;匯出結果"></textarea>
+        <div class="row"><span class="error" data-error-for="features"></span><span class="count" data-count-for="features"></span></div>
+      </div>
+
+      <div class="field">
+        <label for="presentation">呈現效果 <span class="req" aria-hidden="true">*</span></label>
+        <p class="hint">網頁？表格？圖表？聊天機器人？寄到信箱？</p>
+        <textarea id="presentation" name="presentation" rows="3" required maxlength="1000"
+          placeholder="例：一個網頁，結果用表格顯示，差異的地方標紅色。"></textarea>
+        <div class="row"><span class="error" data-error-for="presentation"></span><span class="count" data-count-for="presentation"></span></div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+        <p class="hint">只用來回信告訴你結果。<strong>不會出現在公開的許願列表上。</strong></p>
+        <input type="email" id="email" name="email" required maxlength="254"
+          autocomplete="email" placeholder="you@example.com">
+        <div class="row"><span class="error" data-error-for="email"></span></div>
+      </div>
+
+      <!-- 蜜罐欄位：真人看不到，機器人會填。填了就靜默丟棄 -->
+      <div class="hp" aria-hidden="true">
+        <label for="website">Website</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" id="submit-btn">
+        <span class="btn-label">送出許願</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+
+      <p class="form-note">送出後會收到一封確認信。沒收到請看看垃圾郵件匣。</p>
+      <p class="status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+
+    <section class="done" id="done-panel" hidden>
+      <h2>收到了 🌠</h2>
+      <p>你的許願編號是 <strong id="wish-id">—</strong>，確認信已寄出。</p>
+      <p class="muted">
+        接下來：我會做可行性分析並更新到公開的許願列表。<br>
+        如果決定開發，完成後會再寄一封信給你，附上連結與反饋表單。<br>
+        如果不做，也會回信說明原因。
+      </p>
+      <button type="button" id="again-btn" class="ghost">再許一個</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      許願列表與開發進度公開在 Notion。
+      <a id="list-link" href="#" rel="noopener">看目前的許願列表 →</a>
+    </p>
+    <p class="muted small">你的 email 只用於回信，不公開、不轉作他用。</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
