@@ -1,0 +1,184 @@
+/* 湖／海地平線 — 已淘汰的背景版本（重建，非原始快照）
+ *
+ * 這一版在 2026-08-03 的迭代中存在過，但從未被 commit：
+ * 它只活在工作區，就被下一個方向覆蓋掉了。
+ * 本檔是**事後依當時對話中的 CSS 原文重建**的，用來保留視覺演進的紀錄。
+ *
+ * 不要 import 這個檔案——它是檔案櫃，不是程式碼。
+ * 目前線上的版本在 web/styles.css。
+ */
+
+/* ───────── 星空 ───────── */
+
+.stars {
+  position: fixed;
+  top: 0; left: 0; right: 0; height: 58%; overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stars::before,
+.stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+}
+
+/* 遠景細星 */
+.stars::before {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 34% 8%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 58% 24%, rgba(201,166,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 79% 12%, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.5px 1.5px at 91% 32%, rgba(143,216,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 22% 46%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 66% 58%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 45% 74%, rgba(255,224,138,.95), transparent),
+    radial-gradient(1.5px 1.5px at 84% 82%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 8% 88%, rgba(143,216,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 5% 34%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 41% 38%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.5px 1.5px at 62% 88%, rgba(201,166,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 95% 68%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 29% 62%, rgba(255,224,138,.8), transparent),
+    radial-gradient(1.5px 1.5px at 74% 44%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 17% 6%, rgba(143,216,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 53% 52%, rgba(255,255,255,.7), transparent);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 3px rgba(200, 225, 255, 0.8));
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+/* 近景亮星 */
+.stars::after {
+  background-image:
+    radial-gradient(3px 3px at 27% 30%, rgba(255,255,255,1), transparent),
+    radial-gradient(3px 3px at 71% 16%, rgba(201,166,255,1), transparent),
+    radial-gradient(3px 3px at 52% 66%, rgba(255,224,138,1), transparent),
+    radial-gradient(3px 3px at 15% 62%, rgba(143,216,255,1), transparent),
+    radial-gradient(3px 3px at 88% 54%, rgba(255,255,255,1), transparent),
+    radial-gradient(3px 3px at 38% 14%, rgba(255,224,138,.95), transparent),
+    radial-gradient(3px 3px at 64% 78%, rgba(143,216,255,1), transparent);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 8px rgba(180, 220, 255, 0.95));
+  animation: twinkle 5s ease-in-out infinite reverse;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+/* 流星：一顆亮頭 + 長拖尾 */
+.shooting-star {
+  position: fixed;
+  top: -12vh;
+  left: 60%;
+  width: 3px;
+  height: 190px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+    transparent 0%, rgba(180, 225, 255, 0.35) 30%,
+    rgba(255, 255, 255, 1) 92%, #ffffff 100%);
+  filter: drop-shadow(0 0 10px rgba(180, 220, 255, 1));
+  transform: rotate(30deg);
+  animation: shoot 6s linear infinite;
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(255,255,255,.95), 0 0 24px 8px rgba(143,216,255,.75);
+}
+
+.shooting-star:nth-of-type(2) { left: 18%; animation-delay: 1.6s; animation-duration: 7.5s; }
+.shooting-star:nth-of-type(3) { left: 82%; animation-delay: 3.2s; animation-duration: 8.5s; }
+.shooting-star:nth-of-type(4) { left: 38%; animation-delay: 4.6s; animation-duration: 6.8s; }
+.shooting-star:nth-of-type(5) { left: 92%; animation-delay: 6.1s; animation-duration: 9s; }
+.shooting-star:nth-of-type(6) { left: 6%;  animation-delay: 8.3s; animation-duration: 7.2s; }
+
+@keyframes shoot {
+  0%  { transform: translate3d(0, 0, 0) rotate(30deg); opacity: 0; }
+  3%  { opacity: 1; }
+  22% { transform: translate3d(-45vw, 125vh, 0) rotate(30deg); opacity: 1; }
+  26% { transform: translate3d(-52vw, 145vh, 0) rotate(30deg); opacity: 0; }
+  100% { transform: translate3d(-52vw, 145vh, 0) rotate(30deg); opacity: 0; }
+}
+
+/* 月亮 */
+.moon {
+  position: fixed;
+  top: 9%;
+  right: 16%;
+  width: 58px;
+  height: 58px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fffdf4 0%, #f4ecd2 55%, #ddd2ae 100%);
+  animation: moon-glow 9s ease-in-out infinite;
+}
+
+@keyframes moon-glow {
+  0%, 100% { box-shadow: 0 0 30px 8px rgba(255,248,220,.32), 0 0 90px 30px rgba(255,245,210,.16); }
+  50%      { box-shadow: 0 0 42px 12px rgba(255,248,220,.45), 0 0 120px 40px rgba(255,245,210,.24); }
+}
+
+/* 湖／海：上半夜空、下半水面 */
+.horizon {
+  position: fixed; left: 0; right: 0; top: 58%; height: 1px; z-index: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(170,210,255,.45) 25%,
+    rgba(220,235,255,.7) 50%, rgba(170,210,255,.45) 75%, transparent);
+  box-shadow: 0 0 24px 6px rgba(140,190,255,.28);
+}
+.pool {
+  position: fixed; left: 0; right: 0; top: 58%; bottom: 0;
+  z-index: 0; pointer-events: none; overflow: hidden;
+  background: linear-gradient(180deg, rgba(150,200,255,.14) 0%, rgba(60,100,180,.10) 18%,
+    rgba(12,20,52,.45) 55%, rgba(4,8,22,.7) 100%);
+}
+.reflections {
+  position: fixed; left: 0; right: 0; top: 58%; bottom: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(7px 2px at 27% 12%, rgba(255,255,255,.95), transparent),
+    radial-gradient(7px 2px at 71% 26%, rgba(201,166,255,.9), transparent),
+    radial-gradient(6px 2px at 52% 8%, rgba(255,224,138,.85), transparent),
+    radial-gradient(6px 2px at 15% 34%, rgba(143,216,255,.9), transparent),
+    radial-gradient(7px 2px at 88% 16%, rgba(255,255,255,.85), transparent),
+    radial-gradient(5px 2px at 38% 44%, rgba(255,224,138,.8), transparent),
+    radial-gradient(5px 2px at 64% 52%, rgba(143,216,255,.85), transparent),
+    radial-gradient(5px 2px at 45% 30%, rgba(201,166,255,.8), transparent),
+    radial-gradient(ellipse 60px 45% at 74% 0%, rgba(255,245,210,.22), transparent 70%);
+  filter: blur(1.2px); animation: reflect-wobble 6s ease-in-out infinite alternate;
+}
+@keyframes reflect-wobble {
+  0% { transform: translateX(-10px) scaleY(1); opacity: .5; }
+  100% { transform: translateX(10px) scaleY(1.45); opacity: .7; }
+}
+.wave {
+  position: absolute; left: -60%; width: 220%; height: 3px; border-radius: 50%;
+  filter: blur(1.5px); will-change: transform;
+  background: linear-gradient(90deg, transparent, rgba(180,225,255,.35) 18%, transparent 34%,
+    rgba(201,166,255,.3) 52%, transparent 68%, rgba(180,225,255,.32) 84%, transparent);
+}
+.wave-1 { top: 14%; animation: roll 19s linear infinite; }
+.wave-2 { top: 34%; height: 5px; opacity: .85; animation: roll 27s linear infinite reverse; }
+.wave-3 { top: 62%; height: 8px; opacity: .7; animation: roll 36s linear infinite; }
+@keyframes roll {
+  0% { transform: translateX(0) scaleY(1); }
+  50% { transform: translateX(12%) scaleY(1.8); }
+  100% { transform: translateX(24%) scaleY(1); }
+}
+

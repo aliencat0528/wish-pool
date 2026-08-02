@@ -1,0 +1,198 @@
+/* 滿版水池 — 已淘汰的背景版本（重建，非原始快照）
+ *
+ * 這一版在 2026-08-03 的迭代中存在過，但從未被 commit：
+ * 它只活在工作區，就被下一個方向覆蓋掉了。
+ * 本檔是**事後依當時對話中的 CSS 原文重建**的，用來保留視覺演進的紀錄。
+ *
+ * 不要 import 這個檔案——它是檔案櫃，不是程式碼。
+ * 目前線上的版本在 web/styles.css。
+ */
+
+/* ───────── 星空 ───────── */
+
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stars::before,
+.stars::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+}
+
+/* 遠景細星 */
+.stars::before {
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 34% 8%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 58% 24%, rgba(201,166,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 79% 12%, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.5px 1.5px at 91% 32%, rgba(143,216,255,1), transparent),
+    radial-gradient(1.5px 1.5px at 22% 46%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 66% 58%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 45% 74%, rgba(255,224,138,.95), transparent),
+    radial-gradient(1.5px 1.5px at 84% 82%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 8% 88%, rgba(143,216,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 5% 34%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 41% 38%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1.5px 1.5px at 62% 88%, rgba(201,166,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 95% 68%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1.5px 1.5px at 29% 62%, rgba(255,224,138,.8), transparent),
+    radial-gradient(1.5px 1.5px at 74% 44%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1.5px 1.5px at 17% 6%, rgba(143,216,255,.9), transparent),
+    radial-gradient(1.5px 1.5px at 53% 52%, rgba(255,255,255,.7), transparent);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 3px rgba(200, 225, 255, 0.8));
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+/* 近景亮星 */
+.stars::after {
+  background-image:
+    radial-gradient(3px 3px at 27% 30%, rgba(255,255,255,1), transparent),
+    radial-gradient(3px 3px at 71% 16%, rgba(201,166,255,1), transparent),
+    radial-gradient(3px 3px at 52% 66%, rgba(255,224,138,1), transparent),
+    radial-gradient(3px 3px at 15% 62%, rgba(143,216,255,1), transparent),
+    radial-gradient(3px 3px at 88% 54%, rgba(255,255,255,1), transparent),
+    radial-gradient(3px 3px at 38% 14%, rgba(255,224,138,.95), transparent),
+    radial-gradient(3px 3px at 64% 78%, rgba(143,216,255,1), transparent);
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 8px rgba(180, 220, 255, 0.95));
+  animation: twinkle 5s ease-in-out infinite reverse;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+/* 流星：一顆亮頭 + 長拖尾 */
+.shooting-star {
+  position: fixed;
+  top: -12vh;
+  left: 60%;
+  width: 3px;
+  height: 190px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+    transparent 0%, rgba(180, 225, 255, 0.35) 30%,
+    rgba(255, 255, 255, 1) 92%, #ffffff 100%);
+  filter: drop-shadow(0 0 10px rgba(180, 220, 255, 1));
+  transform: rotate(30deg);
+  animation: shoot 6s linear infinite;
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(255,255,255,.95), 0 0 24px 8px rgba(143,216,255,.75);
+}
+
+.shooting-star:nth-of-type(2) { left: 18%; animation-delay: 1.6s; animation-duration: 7.5s; }
+.shooting-star:nth-of-type(3) { left: 82%; animation-delay: 3.2s; animation-duration: 8.5s; }
+.shooting-star:nth-of-type(4) { left: 38%; animation-delay: 4.6s; animation-duration: 6.8s; }
+.shooting-star:nth-of-type(5) { left: 92%; animation-delay: 6.1s; animation-duration: 9s; }
+.shooting-star:nth-of-type(6) { left: 6%;  animation-delay: 8.3s; animation-duration: 7.2s; }
+
+@keyframes shoot {
+  0%  { transform: translate3d(0, 0, 0) rotate(30deg); opacity: 0; }
+  3%  { opacity: 1; }
+  22% { transform: translate3d(-45vw, 125vh, 0) rotate(30deg); opacity: 1; }
+  26% { transform: translate3d(-52vw, 145vh, 0) rotate(30deg); opacity: 0; }
+  100% { transform: translate3d(-52vw, 145vh, 0) rotate(30deg); opacity: 0; }
+}
+
+/* 月亮 */
+.moon {
+  position: fixed;
+  top: 9%;
+  right: 16%;
+  width: 58px;
+  height: 58px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #fffdf4 0%, #f4ecd2 55%, #ddd2ae 100%);
+  animation: moon-glow 9s ease-in-out infinite;
+}
+
+@keyframes moon-glow {
+  0%, 100% { box-shadow: 0 0 30px 8px rgba(255,248,220,.32), 0 0 90px 30px rgba(255,245,210,.16); }
+  50%      { box-shadow: 0 0 42px 12px rgba(255,248,220,.45), 0 0 120px 40px rgba(255,245,210,.24); }
+}
+
+/* 滿版：整個畫面就是池面，往下看進水裡 */
+.pool {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, rgba(143,216,255,.10), transparent 65%),
+    radial-gradient(ellipse 60% 50% at 20% 75%, rgba(201,166,255,.09), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 82% 25%, rgba(120,180,255,.08), transparent 60%),
+    linear-gradient(180deg, transparent 0%, rgba(10,16,44,.35) 60%, rgba(6,10,28,.6) 100%);
+}
+.pool::before {
+  content: ''; position: absolute; inset: -20%;
+  background-image:
+    repeating-linear-gradient(74deg, transparent 0 42px, rgba(180,225,255,.045) 42px 52px, transparent 52px 96px),
+    repeating-linear-gradient(-63deg, transparent 0 58px, rgba(201,166,255,.04) 58px 66px, transparent 66px 124px);
+  filter: blur(1.5px); animation: caustics 22s ease-in-out infinite alternate;
+}
+@keyframes caustics {
+  0% { transform: translate3d(-2%,-1%,0) scale(1); opacity: .75; }
+  100% { transform: translate3d(2%,1.5%,0) scale(1.06); opacity: 1; }
+}
+.reflections {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .55;
+  background-image:
+    radial-gradient(5px 2px at 27% 72%, rgba(255,255,255,.9), transparent),
+    radial-gradient(5px 2px at 71% 86%, rgba(201,166,255,.85), transparent),
+    radial-gradient(5px 2px at 52% 60%, rgba(255,224,138,.8), transparent),
+    radial-gradient(5px 2px at 15% 92%, rgba(143,216,255,.85), transparent),
+    radial-gradient(5px 2px at 88% 64%, rgba(255,255,255,.8), transparent),
+    radial-gradient(4px 2px at 38% 96%, rgba(255,224,138,.75), transparent),
+    radial-gradient(4px 2px at 64% 70%, rgba(143,216,255,.8), transparent),
+    radial-gradient(4px 2px at 45% 82%, rgba(201,166,255,.75), transparent);
+  filter: blur(1px); animation: reflect-wobble 7s ease-in-out infinite alternate;
+}
+@keyframes reflect-wobble {
+  0% { transform: translateX(-8px) scaleY(1); opacity: .35; }
+  100% { transform: translateX(8px) scaleY(1.5); opacity: .55; }
+}
+.ripple {
+  position: absolute; width: 60px; height: 60px; margin: -30px 0 0 -30px;
+  border: 1px solid rgba(180,225,255,.45); border-radius: 50%; opacity: 0;
+  animation: spread 9s ease-out infinite;
+}
+.ripple-1 { top: 22%; left: 18%; animation-duration: 9s; }
+.ripple-2 { top: 58%; left: 72%; animation-delay: 2.4s; animation-duration: 11s; }
+.ripple-3 { top: 78%; left: 30%; animation-delay: 4.8s; animation-duration: 10s; }
+.ripple-4 { top: 38%; left: 86%; animation-delay: 7.1s; animation-duration: 12s; }
+@keyframes spread {
+  0% { transform: scale(.15); opacity: 0; }
+  10% { opacity: .6; }
+  100% { transform: scale(9); opacity: 0; }
+}
+.wave {
+  position: absolute; left: 50%; top: 50%; width: 260vmax; height: 260vmax;
+  margin: -130vmax 0 0 -130vmax; border-radius: 44% 46% 42% 48%; will-change: transform;
+}
+.wave-1 { background: rgba(143,216,255,.055); animation: drift 40s linear infinite; }
+.wave-2 { border-radius: 47% 43% 45% 41%; background: rgba(201,166,255,.05); animation: drift 58s linear infinite reverse; }
+.wave-3 { border-radius: 41% 49% 44% 46%; background: rgba(90,150,220,.06); animation: drift 76s linear infinite; }
+@keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
