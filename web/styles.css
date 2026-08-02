@@ -5,10 +5,10 @@
   --bg-deep: #070b1a;
   --bg-mid: #0e1430;
   --bg-glow: #1b2450;
-  --card: rgba(30, 40, 92, 0.24);
+  --card: rgba(46, 58, 120, 0.22);
   --card-border: rgba(196, 216, 255, 0.34);
   --text: #eef2ff;
-  --text-muted: #c3cdea;
+  --text-muted: #d4dcf3;
   --accent: #8fd8ff;
   --accent-2: #c9a6ff;
   --accent-3: #ffe08a;
@@ -37,11 +37,11 @@ body {
   /* 夜空：提亮成暮色，靠紫藍與粉的暈光做夢幻感 */
   background:
     radial-gradient(circle 340px at 84% 9%, rgba(255, 248, 224, 0.22), transparent 72%),
-    radial-gradient(ellipse 75% 50% at 18% 8%, rgba(168, 130, 245, 0.28), transparent 68%),
-    radial-gradient(ellipse 65% 45% at 88% 42%, rgba(120, 190, 255, 0.20), transparent 66%),
-    radial-gradient(ellipse 80% 55% at 50% 62%, rgba(150, 190, 255, 0.22), transparent 72%),
-    radial-gradient(ellipse 50% 35% at 68% 88%, rgba(232, 168, 232, 0.16), transparent 70%),
-    linear-gradient(180deg, #1a2150 0%, #26306c 32%, #303c82 58%, #232c62 82%, #171e46 100%);
+    radial-gradient(ellipse 75% 50% at 18% 8%, rgba(186, 152, 250, 0.34), transparent 68%),
+    radial-gradient(ellipse 65% 45% at 88% 42%, rgba(140, 205, 255, 0.26), transparent 66%),
+    radial-gradient(ellipse 80% 55% at 50% 62%, rgba(172, 206, 255, 0.28), transparent 72%),
+    radial-gradient(ellipse 50% 35% at 68% 88%, rgba(244, 186, 240, 0.22), transparent 70%),
+    linear-gradient(180deg, #1e2760 0%, #2b3679 30%, #35428d 55%, #28326b 80%, #1b2350 100%);
   background-attachment: fixed;
 }
 
@@ -199,29 +199,85 @@ body {
 }
 
 .pool {
-  position: relative;
-  /* 四邊都出血：寬度超過視窗，高度先乘回 cos(62°)≈0.47 再放大，
-     傾斜壓縮後投影仍蓋滿整個畫面 */
-  width: 210vw;
-  height: 330vh;
+  position: absolute;
+  width: 92vw;
+  height: 122vh;
   border-radius: 50%;
   overflow: hidden;
-  /* 62 度：比 72 度立起來一些，遠端收窄、近端放寬的立體感才看得出來 */
-  transform: rotateX(62deg);
   transform-style: preserve-3d;
-  /* 池壁：外圈亮邊 + 內圈落在水面上的陰影 */
   box-shadow:
-    0 0 0 1px rgba(170, 215, 255, 0.35),
-    0 0 60px 10px rgba(120, 180, 255, 0.18),
-    inset 0 0 90px 30px rgba(30, 44, 100, 0.38),
-    inset 0 0 20px 4px rgba(180, 220, 255, 0.28);
-  /* 水體：中央較深，靠邊較亮 */
+    0 0 0 1px rgba(200, 230, 255, 0.35),
+    0 0 70px 14px rgba(150, 200, 255, 0.16),
+    inset 0 0 110px 40px rgba(40, 56, 122, 0.42),
+    inset 0 0 24px 5px rgba(210, 235, 255, 0.30);
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(58, 78, 150, 0.55) 0%,
-      rgba(78, 112, 190, 0.42) 45%,
-      rgba(130, 185, 240, 0.30) 78%,
-      rgba(205, 235, 255, 0.26) 100%);
+      rgba(58, 76, 152, 0.42) 0%,
+      rgba(84, 116, 190, 0.30) 45%,
+      rgba(140, 185, 235, 0.20) 78%,
+      rgba(206, 232, 255, 0.20) 100%);
+}
+
+/* 右下那池：從斜上方看下去 */
+.pool--br {
+  right: -22vw;
+  bottom: -52vh;
+  transform: rotateX(64deg) rotateZ(-7deg);
+}
+
+/* 左上那池：反向傾斜，像同一片水的另一端翻上來 */
+.pool--tl {
+  left: -22vw;
+  top: -52vh;
+  transform: rotateX(-64deg) rotateZ(-7deg);
+}
+
+/* 兩池之間的波光粼粼：一條橫過畫面的光帶，光點來回掃 */
+.shimmer {
+  position: fixed;
+  left: -20vw;
+  right: -20vw;
+  top: 50%;
+  height: 38vh;
+  margin-top: -19vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  transform: rotate(-7deg);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+/* 三層光點以不同速度掃過，交錯就成了粼粼的碎光 */
+.shimmer::before,
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: -10%;
+  background-image:
+    radial-gradient(7px 2px at 8% 22%, rgba(255,255,255,.85), transparent),
+    radial-gradient(9px 2px at 21% 62%, rgba(210,240,255,.8), transparent),
+    radial-gradient(6px 2px at 34% 34%, rgba(255,255,255,.75), transparent),
+    radial-gradient(11px 3px at 47% 74%, rgba(226,205,255,.8), transparent),
+    radial-gradient(7px 2px at 59% 18%, rgba(255,255,255,.8), transparent),
+    radial-gradient(9px 2px at 72% 56%, rgba(210,240,255,.85), transparent),
+    radial-gradient(6px 2px at 85% 30%, rgba(255,246,214,.75), transparent),
+    radial-gradient(10px 3px at 94% 68%, rgba(255,255,255,.8), transparent);
+  filter: blur(0.6px);
+  will-change: transform, opacity;
+}
+
+.shimmer::before { opacity: 0.8; animation: glint 9s ease-in-out infinite alternate; }
+.shimmer::after {
+  transform: scaleX(-1) translateY(18%);
+  opacity: 0.55;
+  animation: glint 13s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes glint {
+  0%   { transform: translateX(-4%) scaleY(1); opacity: 0.45; }
+  50%  { opacity: 1; }
+  100% { transform: translateX(4%) scaleY(1.6); opacity: 0.6; }
 }
 
 /* 水面的兩層流動光紋。兩層轉速與方向不同，交錯時才會有水在動的錯覺 */
@@ -238,7 +294,7 @@ body {
   background:
     repeating-conic-gradient(from 0deg at 50% 50%,
       transparent 0deg 3deg,
-      rgba(210, 240, 255, 0.09) 3deg 5deg,
+      rgba(225, 245, 255, 0.13) 3deg 5deg,
       transparent 5deg 9deg);
   filter: blur(14px);
   animation: swirl 26s linear infinite;
@@ -248,7 +304,7 @@ body {
   background:
     repeating-conic-gradient(from 40deg at 50% 50%,
       transparent 0deg 4deg,
-      rgba(228, 200, 255, 0.08) 4deg 7deg,
+      rgba(238, 216, 255, 0.11) 4deg 7deg,
       transparent 7deg 12deg);
   filter: blur(18px);
   animation: swirl 41s linear infinite reverse;
@@ -334,6 +390,7 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 18px rgba(10, 16, 48, 0.75));
   animation: gleam 9s ease-in-out infinite;
 }
 
@@ -342,7 +399,8 @@ h1 {
   50% { background-position: 100% center; }
 }
 
-.lede { margin: 0 auto; max-width: 34rem; color: var(--text-muted); }
+.lede { margin: 0 auto; max-width: 34rem; color: var(--text-muted);
+  text-shadow: 0 1px 12px rgba(10, 16, 48, 0.6); }
 
 .promise {
   max-width: 34rem;
@@ -414,7 +472,7 @@ textarea, input[type="email"] {
   font: inherit;
   font-size: 0.95rem;
   color: var(--text);
-  background: rgba(22, 32, 76, 0.32);
+  background: rgba(34, 46, 104, 0.30);
   border: 1px solid var(--card-border);
   border-radius: 10px;
   resize: vertical;
@@ -424,7 +482,7 @@ textarea, input[type="email"] {
 textarea:focus, input[type="email"]:focus {
   outline: none;
   border-color: var(--accent);
-  background: rgba(22, 32, 76, 0.46);
+  background: rgba(34, 46, 104, 0.44);
   box-shadow: 0 0 0 3px rgba(143, 216, 255, 0.16), 0 0 24px -6px var(--accent);
 }
 
@@ -586,6 +644,7 @@ a:hover { color: var(--accent-3); }
     animation: none !important;
   }
   .shooting-star, .ripple { display: none; }
+  .shimmer::before, .shimmer::after { animation: none !important; }
   h1 {
     background: none;
     -webkit-text-fill-color: var(--text);

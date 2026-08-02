@@ -14,8 +14,8 @@
   if (prefersReducedMotion) return;
 
   const COLORS = ['#8fd8ff', '#c9a6ff', '#ffe08a', '#ffffff'];
-  const MAX_LIVE = 160;
-  const TRAIL_MIN_DISTANCE = 8;
+  const MAX_LIVE = 220;
+  const TRAIL_MIN_DISTANCE = 6;
 
   let live = 0;
   let lastX = null;
@@ -25,11 +25,11 @@
     if (live >= MAX_LIVE) return;
 
     const opts = options || {};
-    const size = opts.size || 5 + Math.random() * 6;
-    const life = opts.life || 900 + Math.random() * 600;
+    const size = opts.size || 6 + Math.random() * 8;
+    const life = opts.life || 1100 + Math.random() * 700;
     const color = COLORS[(Math.random() * COLORS.length) | 0];
-    // 三成機率生成星形而非圓點——混著才像仙女棒灑出來的
-    const isStar = opts.star !== undefined ? opts.star : Math.random() < 0.3;
+    // 四成五機率生成星形而非圓點——混著才像仙女棒灑出來的
+    const isStar = opts.star !== undefined ? opts.star : Math.random() < 0.45;
 
     const el = document.createElement('span');
     el.className = 'sparkle';
@@ -38,7 +38,7 @@
 
     if (isStar) {
       el.textContent = Math.random() < 0.5 ? '✦' : '✧';
-      el.style.fontSize = size * 2.2 + 'px';
+      el.style.fontSize = size * 2.6 + 'px';
       el.style.color = color;
       el.style.borderRadius = '0';
       el.style.textShadow = `0 0 ${size * 2}px ${color}, 0 0 ${size * 4}px ${color}`;
@@ -90,7 +90,14 @@
       lastX = event.clientX;
       lastY = event.clientY;
 
-      spawn(event.clientX, event.clientY, { size: 2 + Math.random() * 3, life: 620 });
+      const n = 1 + (Math.random() < 0.55 ? 1 : 0);
+      for (let i = 0; i < n; i += 1) {
+        spawn(
+          event.clientX + (Math.random() - 0.5) * 14,
+          event.clientY + (Math.random() - 0.5) * 14,
+          { size: 4 + Math.random() * 5, life: 850 + Math.random() * 400 }
+        );
+      }
     },
     { passive: true }
   );
