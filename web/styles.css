@@ -9,8 +9,8 @@
   --card-border: rgba(196, 216, 255, 0.34);
   --text: #eef2ff;
   --text-muted: #d4dcf3;
-  --accent: #8fd8ff;
-  --accent-2: #c9a6ff;
+  --accent: #7fe3f5;
+  --accent-2: #b6a8ff;
   --accent-3: #ffe08a;
   --danger: #ff9d9d;
   --success: #9ff0c4;
@@ -41,7 +41,7 @@ body {
     radial-gradient(ellipse 65% 45% at 88% 42%, rgba(140, 205, 255, 0.26), transparent 66%),
     radial-gradient(ellipse 80% 55% at 50% 62%, rgba(172, 206, 255, 0.28), transparent 72%),
     radial-gradient(ellipse 50% 35% at 68% 88%, rgba(244, 186, 240, 0.22), transparent 70%),
-    linear-gradient(180deg, #1e2760 0%, #2b3679 30%, #35428d 55%, #28326b 80%, #1b2350 100%);
+    linear-gradient(168deg, #24336f 0%, #2a4a92 22%, #2f63a8 44%, #3a5aa4 62%, #3d4590 80%, #262f66 100%);
   background-attachment: fixed;
 }
 
@@ -212,10 +212,10 @@ body {
     inset 0 0 24px 5px rgba(210, 235, 255, 0.30);
   background:
     radial-gradient(circle at 50% 50%,
-      rgba(58, 76, 152, 0.42) 0%,
-      rgba(84, 116, 190, 0.30) 45%,
-      rgba(140, 185, 235, 0.20) 78%,
-      rgba(206, 232, 255, 0.20) 100%);
+      rgba(42, 84, 150, 0.42) 0%,
+      rgba(62, 130, 190, 0.30) 45%,
+      rgba(126, 200, 232, 0.20) 78%,
+      rgba(198, 240, 255, 0.22) 100%);
 }
 
 /* 右下那池：從斜上方看下去 */
@@ -230,6 +230,109 @@ body {
   left: -22vw;
   top: -52vh;
   transform: rotateX(-64deg) rotateZ(-7deg);
+}
+
+/* 極光：三片超大柔光緩慢漂移，讓底色的藍一直在變 */
+.aurora {
+  position: fixed;
+  inset: -25%;
+  z-index: 0;
+  pointer-events: none;
+  /* 低透明度、高彩度——這樣疊起來是「顏色變多」，不是「變白」。
+     四片各自一個色相，才不會整片同一個藍。 */
+  filter: blur(46px);
+  background:
+    radial-gradient(ellipse 32% 26% at 20% 24%, rgba(20, 200, 190, 0.16), transparent 68%),
+    radial-gradient(ellipse 30% 24% at 72% 30%, rgba(96, 108, 255, 0.17), transparent 68%),
+    radial-gradient(ellipse 34% 28% at 48% 78%, rgba(214, 108, 208, 0.13), transparent 68%),
+    radial-gradient(ellipse 26% 22% at 88% 70%, rgba(255, 186, 110, 0.10), transparent 68%);
+  animation: aurora-drift 34s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1);    opacity: 0.7; }
+  50%  { opacity: 0.95; }
+  100% { transform: translate3d(3%, 2.5%, 0) scale(1.1);  opacity: 0.8; }
+}
+
+/* 光波漣漪：從池子外緣往外擴散的環，兩池各自發，交會在中間 */
+.halo {
+  position: absolute;
+  width: 92vw;
+  height: 122vh;
+  border-radius: 50%;
+  /* 只留一條細線。這裡放 box-shadow 會在放大 1.75 倍後把整頁洗白——
+     六個環疊起來的光暈是會累加的 */
+  border: 1px solid rgba(214, 240, 255, 0.4);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.halo--br { right: -22vw; bottom: -52vh; animation: halo-br 8s ease-out infinite; }
+.halo--br.halo-b { animation-delay: 2.7s; }
+.halo--br.halo-c { animation-delay: 5.4s; }
+
+.halo--tl { left: -22vw; top: -52vh; animation: halo-tl 8s ease-out infinite; }
+.halo--tl.halo-b { animation-delay: 2.7s; }
+.halo--tl.halo-c { animation-delay: 5.4s; }
+
+/* 傾角要跟各自的池子一致，光波才像躺在同一片水面上 */
+@keyframes halo-br {
+  0%   { transform: rotateX(64deg) rotateZ(-7deg) scale(1);    opacity: 0; }
+  12%  { opacity: 0.38; }
+  100% { transform: rotateX(64deg) rotateZ(-7deg) scale(1.75); opacity: 0; }
+}
+
+@keyframes halo-tl {
+  0%   { transform: rotateX(-64deg) rotateZ(-7deg) scale(1);    opacity: 0; }
+  12%  { opacity: 0.38; }
+  100% { transform: rotateX(-64deg) rotateZ(-7deg) scale(1.75); opacity: 0; }
+}
+
+/* 兩池之間的水流：一團柔光沿對角線在兩池間來回，把它們連成同一片水 */
+.current {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(ellipse 50% 50% at 50% 50%,
+    rgba(198, 232, 255, 0.16) 0%,
+    rgba(206, 186, 255, 0.10) 45%,
+    transparent 72%);
+  background-repeat: no-repeat;
+  background-size: 62vw 46vh;
+  animation: travel 13s ease-in-out infinite alternate;
+}
+
+@keyframes travel {
+  from { background-position: 6% 10%; opacity: 0.55; }
+  50%  { opacity: 1; }
+  to   { background-position: 94% 90%; opacity: 0.55; }
+}
+
+/* 沿同一條對角線漂的光點，三顆錯開時間 */
+.mote {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  background: rgba(226, 244, 255, 0.9);
+  box-shadow: 0 0 10px 3px rgba(180, 220, 255, 0.65);
+  opacity: 0;
+  animation: drift-across 16s ease-in-out infinite;
+}
+.mote-2 { animation-delay: 5.3s;  animation-duration: 19s; }
+.mote-3 { animation-delay: 10.6s; animation-duration: 22s; }
+
+@keyframes drift-across {
+  0%   { transform: translate3d(12vw, 14vh, 0) scale(0.6); opacity: 0; }
+  12%  { opacity: 0.9; }
+  88%  { opacity: 0.9; }
+  100% { transform: translate3d(86vw, 84vh, 0) scale(1.1); opacity: 0; }
 }
 
 /* 兩池之間的波光粼粼：一條橫過畫面的光帶，光點來回掃 */
@@ -644,7 +747,9 @@ a:hover { color: var(--accent-3); }
     animation: none !important;
   }
   .shooting-star, .ripple { display: none; }
-  .shimmer::before, .shimmer::after { animation: none !important; }
+  .shimmer::before, .shimmer::after, .current { animation: none !important; }
+  .mote, .halo { display: none; }
+  .aurora { animation: none !important; }
   h1 {
     background: none;
     -webkit-text-fill-color: var(--text);
