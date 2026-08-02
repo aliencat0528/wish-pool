@@ -5,8 +5,8 @@
   --bg-deep: #070b1a;
   --bg-mid: #0e1430;
   --bg-glow: #1b2450;
-  --card: rgba(20, 27, 56, 0.72);
-  --card-border: rgba(140, 170, 255, 0.22);
+  --card: rgba(12, 20, 48, 0.26);
+  --card-border: rgba(160, 195, 255, 0.28);
   --text: #eef2ff;
   --text-muted: #9aa8cf;
   --accent: #8fd8ff;
@@ -197,12 +197,13 @@ body {
 
 .pool {
   position: relative;
-  width: min(86vmin, 880px);
+  /* 延伸到畫面兩側之外，讓池子橫跨整個視野而不是浮在中間一顆 */
+  width: 150vw;
   aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
-  /* 躺下 66 度＝從斜上方看一池水 */
-  transform: rotateX(66deg);
+  /* 躺得更平（72 度），寬度拉大後才不會在垂直方向佔掉整個畫面 */
+  transform: rotateX(72deg);
   transform-style: preserve-3d;
   /* 池壁：外圈亮邊 + 內圈落在水面上的陰影 */
   box-shadow:
@@ -232,20 +233,20 @@ body {
 .pool::before {
   background:
     repeating-conic-gradient(from 0deg at 50% 50%,
-      transparent 0deg 8deg,
-      rgba(180, 225, 255, 0.10) 8deg 13deg,
-      transparent 13deg 22deg);
-  filter: blur(6px);
+      transparent 0deg 3deg,
+      rgba(180, 225, 255, 0.055) 3deg 5deg,
+      transparent 5deg 9deg);
+  filter: blur(14px);
   animation: swirl 26s linear infinite;
 }
 
 .pool::after {
   background:
     repeating-conic-gradient(from 40deg at 50% 50%,
-      transparent 0deg 11deg,
-      rgba(201, 166, 255, 0.09) 11deg 15deg,
-      transparent 15deg 30deg);
-  filter: blur(9px);
+      transparent 0deg 4deg,
+      rgba(201, 166, 255, 0.05) 4deg 7deg,
+      transparent 7deg 12deg);
+  filter: blur(18px);
   animation: swirl 41s linear infinite reverse;
 }
 
@@ -369,9 +370,11 @@ form, .done {
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
   background: var(--card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.7), 0 0 60px -40px var(--accent);
+  backdrop-filter: blur(20px) saturate(125%);
+  -webkit-backdrop-filter: blur(20px) saturate(125%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 20px 60px -40px rgba(0, 0, 0, 0.55);
 }
 
 .form-title {
@@ -407,7 +410,7 @@ textarea, input[type="email"] {
   font: inherit;
   font-size: 0.95rem;
   color: var(--text);
-  background: rgba(8, 12, 30, 0.5);
+  background: rgba(8, 14, 34, 0.34);
   border: 1px solid var(--card-border);
   border-radius: 10px;
   resize: vertical;
@@ -417,7 +420,7 @@ textarea, input[type="email"] {
 textarea:focus, input[type="email"]:focus {
   outline: none;
   border-color: var(--accent);
-  background: rgba(8, 12, 30, 0.72);
+  background: rgba(8, 14, 34, 0.5);
   box-shadow: 0 0 0 3px rgba(143, 216, 255, 0.16), 0 0 24px -6px var(--accent);
 }
 
