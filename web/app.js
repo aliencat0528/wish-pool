@@ -154,6 +154,8 @@
       form.hidden = true;
       donePanel.hidden = false;
       donePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 願望送出去了——交給 magic.js 放星塵。純裝飾，沒載入也不影響流程。
+      window.dispatchEvent(new CustomEvent('wish:sent'));
     } catch (error) {
       setStatus(`送出失敗：${error.message}。可以再試一次，或直接寄信給我。`, 'error');
     } finally {
