@@ -5,3 +5,9 @@ node_modules/
 
 # 本地覆寫用的設定（若要在本地試接後端，複製 config.js 改成這個檔名再改 index.html）
 web/config.local.js
+
+# 環境變數與金鑰（← D-029）
+.env
+.env.*
+!.env.example
+!.env.*.example
